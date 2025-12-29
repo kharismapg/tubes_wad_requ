@@ -310,4 +310,4 @@ This project is open-sourced software licensed under the MIT license.
 
 ---
 
-**Made with ❤️ for Indonesian Students**
+**Made with ❤️ for Telyutizen**
