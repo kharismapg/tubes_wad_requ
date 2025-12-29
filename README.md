@@ -11,40 +11,43 @@
 ### ✨ Key Features
 
 #### 🎯 For Students & Organizers
-- **Dashboard dengan Grid View**: Tampilan poster kegiatan yang rapi dan menarik
-- **Advanced Filtering**: Filter berdasarkan kategori (Kepanitiaan, Organisasi, Laboratorium)
-- **Smart Search**: Pencarian berdasarkan judul dan deskripsi
-- **Deadline Sorting**: Urutkan berdasarkan deadline terdekat/terjauh
-- **CRUD Posts**: Buat, edit, update, dan hapus postingan (setelah approval admin)
-- **Bookmark System**: Simpan postingan favorit untuk akses cepat
-- **My Posts Management**: Lihat status postingan (Pending, Approved, Rejected)
-- **Archive**: Akses postingan yang sudah expired
-- **Real-time Notifications**: Notifikasi untuk approval/rejection postingan
-- **Report System**: Laporkan postingan yang tidak sesuai
+
+-   **Dashboard dengan Grid View**: Tampilan poster kegiatan yang rapi dan menarik
+-   **Advanced Filtering**: Filter berdasarkan kategori (Kepanitiaan, Organisasi, Laboratorium)
+-   **Smart Search**: Pencarian berdasarkan judul dan deskripsi
+-   **Deadline Sorting**: Urutkan berdasarkan deadline terdekat/terjauh
+-   **CRUD Posts**: Buat, edit, update, dan hapus postingan (setelah approval admin)
+-   **Bookmark System**: Simpan postingan favorit untuk akses cepat
+-   **My Posts Management**: Lihat status postingan (Pending, Approved, Rejected)
+-   **Archive**: Akses postingan yang sudah expired
+-   **Real-time Notifications**: Notifikasi untuk approval/rejection postingan
+-   **Report System**: Laporkan postingan yang tidak sesuai
 
 #### 👨‍💼 For Admins
-- **Post Verification**: Approve atau reject postingan dengan pesan
-- **User Management**: Kelola dan hapus user yang tidak bertanggung jawab
-- **Report Management**: Tinjau dan selesaikan laporan dari user
-- **Archive Management**: Filter arsip berdasarkan tahun/bulan
-- **Full CRUD Access**: Akses penuh ke semua postingan (kecuali edit)
+
+-   **Post Verification**: Approve atau reject postingan dengan pesan
+-   **User Management**: Kelola dan hapus user yang tidak bertanggung jawab
+-   **Report Management**: Tinjau dan selesaikan laporan dari user
+-   **Archive Management**: Filter arsip berdasarkan tahun/bulan
+-   **Full CRUD Access**: Akses penuh ke semua postingan (kecuali edit)
 
 ### 🎨 UI/UX Highlights
-- **Modern Gradient Design**: Gradient indigo-purple yang eye-catching
-- **Dark Mode Support**: Tema gelap untuk kenyamanan mata
-- **Responsive Layout**: Optimal di desktop, tablet, dan mobile
-- **Smooth Animations**: Transisi dan hover effects yang halus
-- **Role-based Navigation**: Menu yang disesuaikan dengan role user
-- **Notification Dropdown**: Akses cepat ke notifikasi terbaru
+
+-   **Modern Gradient Design**: Gradient indigo-purple yang eye-catching
+-   **Responsive Layout**: Optimal di desktop, tablet, dan mobile
+-   **Smooth Animations**: Transisi dan hover effects yang halus
+-   **Role-based Navigation**: Menu yang disesuaikan dengan role user
+-   **Notification Dropdown**: Akses cepat ke notifikasi terbaru
 
 ## 🚀 Installation
 
 ### Prerequisites
-- PHP >= 8.2
-- Composer
-- Node.js & NPM
-- MySQL/PostgreSQL
-- Laragon/XAMPP/Valet (recommended)
+
+-   PHP >= 8.2
+-   Composer
+-   Node.js & NPM
+-   MySQL/PostgreSQL
+-   Laragon/XAMPP/Valet (recommended)
 
 ### Setup Steps
 
@@ -86,11 +89,11 @@ php artisan serve
 
 After seeding, you can login with:
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@requ.com | password |
-| Organizer | hima@requ.com | password |
-| Student | student@requ.com | password |
+| Role      | Email            | Password |
+| --------- | ---------------- | -------- |
+| Admin     | admin@requ.com   | password |
+| Organizer | hima@requ.com    | password |
+| Student   | student@requ.com | password |
 
 ## 🌿 Git Branching Strategy
 
@@ -99,16 +102,20 @@ After seeding, you can login with:
 ```
 main (production-ready code)
 ├── develop (integration branch)
-│   ├── feature/dashboard-controller
-│   ├── feature/post-controller
-│   ├── feature/bookmark-controller
-│   ├── feature/admin-controller
-│   └── feature/notification-controller
+main (production-ready code)
+├── develop (integration branch)
+│   ├── feature/dashboard-controller    (Person 1)
+│   ├── feature/post-controller         (Person 2)
+│   ├── feature/bookmark-controller     (Person 3)
+│   ├── feature/admin-moderation        (Person 4)
+│   ├── feature/admin-system            (Person 5)
+│   └── feature/notification-controller (Person 6)
 ```
 
-### Team Workflow (5 Controllers for 5 People)
+### Team Workflow (6 Members Collaboration)
 
 #### Person 1: Dashboard Controller
+
 ```bash
 git checkout -b feature/dashboard-controller
 # Work on:
@@ -123,6 +130,7 @@ git push origin feature/dashboard-controller
 ```
 
 #### Person 2: Post Controller
+
 ```bash
 git checkout -b feature/post-controller
 # Work on:
@@ -139,6 +147,7 @@ git push origin feature/post-controller
 ```
 
 #### Person 3: Bookmark Controller
+
 ```bash
 git checkout -b feature/bookmark-controller
 # Work on:
@@ -151,23 +160,38 @@ git push origin feature/bookmark-controller
 # Create Pull Request to develop
 ```
 
-#### Person 4: Admin Controller
+#### Person 4: Admin Moderation
+
 ```bash
-git checkout -b feature/admin-controller
+git checkout -b feature/admin-moderation
 # Work on:
-# - app/Http/Controllers/AdminController.php
+# - app/Http/Controllers/AdminController.php (Approve/Reject logic)
 # - resources/views/admin/index.blade.php
-# - resources/views/admin/users.blade.php
 # - resources/views/admin/reports.blade.php
-# - resources/views/admin/archive.blade.php
 
 git add .
-git commit -m "feat: implement admin panel and verification"
-git push origin feature/admin-controller
+git commit -m "feat: implement admin moderation and verification"
+git push origin feature/admin-moderation
 # Create Pull Request to develop
 ```
 
-#### Person 5: Notification & Report Controllers
+#### Person 5: Admin System & User Management
+
+```bash
+git checkout -b feature/admin-system
+# Work on:
+# - app/Http/Controllers/AdminController.php (User & Archive management)
+# - resources/views/admin/users.blade.php
+# - resources/views/admin/archive.blade.php
+
+git add .
+git commit -m "feat: implement user management and archive filters"
+git push origin feature/admin-system
+# Create Pull Request to develop
+```
+
+#### Person 6: Notification & Report Controllers
+
 ```bash
 git checkout -b feature/notification-controller
 # Work on:
@@ -192,7 +216,8 @@ git checkout develop
 git merge feature/dashboard-controller
 git merge feature/post-controller
 git merge feature/bookmark-controller
-git merge feature/admin-controller
+git merge feature/admin-moderation
+git merge feature/admin-system
 git merge feature/notification-controller
 
 # 2. Test on develop branch
@@ -214,9 +239,9 @@ requ_tubes/
 │   │       ├── DashboardController.php      # Person 1
 │   │       ├── PostController.php           # Person 2
 │   │       ├── BookmarkController.php       # Person 3
-│   │       ├── AdminController.php          # Person 4
+│   │       ├── AdminController.php          # Person 4 
 │   │       ├── NotificationController.php   # Person 5
-│   │       └── ReportController.php         # Person 5
+│   │       └── ReportController.php         # Person 6
 │   └── Models/
 │       ├── User.php
 │       ├── Post.php
@@ -246,46 +271,50 @@ requ_tubes/
 
 ## 🔧 Key Technologies
 
-- **Backend**: Laravel 11
-- **Frontend**: Blade Templates, TailwindCSS, Alpine.js
-- **Database**: MySQL
-- **Authentication**: Laravel Breeze
-- **File Storage**: Laravel Storage (public disk)
+-   **Backend**: Laravel 11
+-   **Frontend**: Blade Templates, TailwindCSS, Alpine.js
+-   **Database**: MySQL
+-   **Authentication**: Laravel Breeze
+-   **File Storage**: Laravel Storage (public disk)
 
 ## 📝 Database Schema
 
 ### Users Table
-- id, name, email, password, role (admin/organizer/student), timestamps
+
+-   id, name, email, password, role (admin/organizer/student), timestamps
 
 ### Posts Table
-- id, user_id, judul, deskripsi, kategori, poster_path, deadline, status, link_pendaftaran, pesan_admin, timestamps
+
+-   id, user_id, judul, deskripsi, kategori, poster_path, deadline, status, link_pendaftaran, pesan_admin, timestamps
 
 ### Bookmarks Table
-- id, user_id, post_id, timestamps
+
+-   id, user_id, post_id, timestamps
 
 ### Notifications Table
-- id, user_id, type, title, message, is_read, timestamps
+
+-   id, user_id, type, title, message, is_read, timestamps
 
 ### Reports Table
-- id, user_id, post_id, reason, status, timestamps
+
+-   id, user_id, post_id, reason, status, timestamps
 
 ## 🎯 Features Checklist
 
-- [x] Authentication with role selection
-- [x] Dashboard with grid view
-- [x] Category filtering
-- [x] Search functionality
-- [x] Deadline sorting
-- [x] Post CRUD operations
-- [x] Image upload for posters
-- [x] Admin approval system
-- [x] Bookmark system
-- [x] Notification system
-- [x] Report system
-- [x] User management (admin)
-- [x] Archive functionality
-- [x] Responsive design
-- [x] Dark mode support
+-   [x] Authentication with role selection
+-   [x] Dashboard with grid view
+-   [x] Category filtering
+-   [x] Search functionality
+-   [x] Deadline sorting
+-   [x] Post CRUD operations
+-   [x] Image upload for posters
+-   [x] Admin approval system
+-   [x] Bookmark system
+-   [x] Notification system
+-   [x] Report system
+-   [x] User management (admin)
+-   [x] Archive functionality
+-   [x] Responsive design
 
 ## 🤝 Contributing
 
@@ -302,11 +331,12 @@ This project is open-sourced software licensed under the MIT license.
 
 ## 👨‍💻 Development Team
 
-- Person 1: Dashboard & Post Detail
-- Person 2: Post Management
-- Person 3: Bookmark System
-- Person 4: Admin Panel
-- Person 5: Notifications & Reports
+-   Person 1: Dashboard & Post Detail
+-   Person 2: Post Management
+-   Person 3: Personalization & Profile
+-   Person 4: Content Moderation (Admin)
+-   Person 5: System Admin & Users (Admin)
+-   Person 6: Notifications & Reports
 
 ---
 
