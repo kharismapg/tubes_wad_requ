@@ -23,107 +23,120 @@
             <!-- Tab System -->
             <div x-data="{ tab: 'all' }">
                 <!-- Tab Buttons -->
-                <div class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow p-1 flex space-x-2">
-                    <button @click="tab = 'all'" :class="tab === 'all' ? 'bg-indigo-600 text-white' : 'text-gray-600 dark:text-gray-400'" class="flex-1 px-4 py-2 rounded-md font-semibold transition">
-                        All Posts
+                <div class="mb-8 bg-gray-100 dark:bg-gray-900/50 p-1 rounded-xl flex space-x-1">
+                    <button @click="tab = 'all'" 
+                        :class="tab === 'all' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'" 
+                        class="flex-1 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                        All
                     </button>
-                    <button @click="tab = 'pending'" :class="tab === 'pending' ? 'bg-yellow-500 text-white' : 'text-gray-600 dark:text-gray-400'" class="flex-1 px-4 py-2 rounded-md font-semibold transition">
-                        Pending
-                    </button>
-                    <button @click="tab = 'approved'" :class="tab === 'approved' ? 'bg-green-500 text-white' : 'text-gray-600 dark:text-gray-400'" class="flex-1 px-4 py-2 rounded-md font-semibold transition">
+                    <button @click="tab = 'approved'" 
+                        :class="tab === 'approved' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'" 
+                        class="flex-1 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
                         Approved
                     </button>
-                    <button @click="tab = 'rejected'" :class="tab === 'rejected' ? 'bg-red-500 text-white' : 'text-gray-600 dark:text-gray-400'" class="flex-1 px-4 py-2 rounded-md font-semibold transition">
+                    <button @click="tab = 'pending'" 
+                        :class="tab === 'pending' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'" 
+                        class="flex-1 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                        Pending
+                    </button>
+                    <button @click="tab = 'rejected'" 
+                        :class="tab === 'rejected' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'" 
+                        class="flex-1 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
                         Rejected
                     </button>
                 </div>
 
                 <!-- Posts List -->
-                <div class="space-y-4">
+                <div class="space-y-1.5">
                     @forelse($posts as $post)
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition" 
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 transition-all duration-200" 
                          x-show="tab === 'all' || tab === '{{ $post->status }}'"
                          x-transition>
-                        <div class="flex">
-                            <!-- Poster Thumbnail -->
-                            <div class="w-32 h-32 flex-shrink-0 mr-6">
+                        <div class="flex flex-col sm:flex-row">
+                            <!-- Poster Image -->
+                            <div class="sm:w-48 h-40 sm:h-auto flex-shrink-0 bg-gray-100 relative">
                                 @if($post->poster_path)
-                                <img src="{{ Storage::url($post->poster_path) }}" alt="{{ $post->judul }}" class="w-full h-full object-cover rounded-lg">
+                                <img src="{{ Storage::url($post->poster_path) }}" alt="{{ $post->judul }}" class="w-full h-full object-cover">
                                 @else
-                                <div class="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center">
-                                    <svg class="w-12 h-12 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
+                                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                                    <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
                                 </div>
                                 @endif
+                                
+                                <!-- Status Badge on Image -->
+                                <div class="absolute top-3 left-3">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold shadow-sm
+                                        {{ $post->status == 'approved' ? 'bg-green-500 text-white' : ($post->status == 'pending' ? 'bg-yellow-500 text-white' : 'bg-red-500 text-white') }}">
+                                        {{ ucfirst($post->status) }}
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- Content -->
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div>
-                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $post->judul }}</h3>
-                                        <div class="flex items-center space-x-3 mt-1">
-                                            @php
-                                                $categoryColors = [
-                                                    'Kepanitiaan' => 'bg-blue-100 text-blue-800',
-                                                    'Organisasi' => 'bg-green-100 text-green-800',
-                                                    'Laboratorium' => 'bg-purple-100 text-purple-800',
-                                                    'Seminar' => 'bg-orange-100 text-orange-800',
-                                                    'Lomba' => 'bg-red-100 text-red-800',
-                                                    'Event Kampus' => 'bg-pink-100 text-pink-800',
-                                                ];
-                                                $catColor = $categoryColors[$post->kategori] ?? 'bg-gray-100 text-gray-800';
-                                            @endphp
-                                            <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $catColor }}">
+                            <div class="flex-1 p-5 flex flex-col">
+                                <!-- Header -->
+                                <div class="mb-3">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <h3 class="text-lg font-bold text-gray-900 mb-1 line-clamp-1">{{ $post->judul }}</h3>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
                                                 {{ $post->kategori }}
-                                            </span>
-                                            <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $post->status == 'approved' ? 'bg-green-100 text-green-800' : ($post->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                                {{ ucfirst($post->status) }}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
-                                    {{ Str::limit($post->deskripsi, 150) }}
-                                </p>
-
-                                <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-4 mb-3">
-                                    <div class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <!-- Meta Info -->
+                                <div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-4">
+                                    <div class="flex items-center gap-1.5">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
-                                        Deadline: {{ $post->deadline->format('d M Y') }}
+                                        <span>Deadline: <strong>{{ $post->deadline->format('d M Y') }}</strong></span>
                                     </div>
-                                    <div class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex items-center gap-1.5">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
-                                        Created: {{ $post->created_at->diffForHumans() }}
+                                        <span>{{ $post->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>
 
                                 @if($post->status == 'rejected' && $post->pesan_admin)
-                                <div class="mb-3 p-3 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded">
-                                    <p class="text-sm font-semibold text-red-800 dark:text-red-300">Admin Message:</p>
-                                    <p class="text-sm text-red-700 dark:text-red-400">{{ $post->pesan_admin }}</p>
+                                <div class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg">
+                                    <p class="text-sm text-red-700">
+                                        <span class="font-semibold">Alasan ditolak:</span> {{ $post->pesan_admin }}
+                                    </p>
                                 </div>
                                 @endif
 
-                                <!-- Actions -->
-                                <div class="flex space-x-2">
-                                    <a href="{{ route('post.show', $post->id) }}" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition">
-                                        View
+                                <!-- Action Buttons - Clear Labels -->
+                                <div class="mt-auto pt-4 border-t border-gray-100 flex flex-wrap gap-2">
+                                    <a href="{{ route('post.show', $post->id) }}" 
+                                       class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        Lihat Detail
                                     </a>
-                                    <a href="{{ route('post.edit', $post->id) }}" class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition">
+                                    <a href="{{ route('post.edit', $post->id) }}" 
+                                       class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
                                         Edit
                                     </a>
-                                    <form action="{{ route('post.destroy', $post->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this post?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition">
-                                            Delete
+                                    <form action="{{ route('post.destroy', $post->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus post ini?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" 
+                                                class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 hover:border-red-200 transition-colors">
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                            Hapus
                                         </button>
                                     </form>
                                 </div>

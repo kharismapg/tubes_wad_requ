@@ -22,7 +22,19 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'profile_picture',
     ];
+
+    /**
+     * Get the profile picture URL.
+     */
+    public function getProfilePictureUrlAttribute(): ?string
+    {
+        if ($this->profile_picture) {
+            return \Illuminate\Support\Facades\Storage::url($this->profile_picture);
+        }
+        return null;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
