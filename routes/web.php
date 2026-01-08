@@ -14,10 +14,10 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // --- 1. DASHBOARD (Public for all authenticated users) ---
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // --- 2. POST MANAGEMENT (Student & Organizer) ---
     // IMPORTANT: Specific routes must come BEFORE dynamic routes
     Route::get('/my-posts', [PostController::class, 'myPosts'])->name('post.my-posts');
@@ -27,7 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
     Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
     Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.destroy');
-    
+
     // Dynamic route with {id} must come AFTER specific routes
     Route::get('/post/{id}', [DashboardController::class, 'show'])->name('post.show');
 
@@ -60,7 +60,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // --- 7. PROFILE ---
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.picture.update');
+    Route::delete('/profile/picture', [ProfileController::class, 'deleteProfilePicture'])->name('profile.picture.delete');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -1,219 +1,207 @@
 <x-app-layout>
-    <div class="py-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen">
+    <div class="py-12 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Header Section -->
-            <div class="mb-8">
-                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                    Discover Events & Opportunities
-                </h1>
-                <p class="text-gray-600 dark:text-gray-400">
-                    Find the perfect event, organization, or committee for you
+            <x-slot name="header">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h2 class="font-bold text-3xl text-gray-800 leading-tight">
+                    {{ __('Discover Events') }}
+                </h2>
+                <p class="text-gray-500 mt-2 text-lg">
+                    Find the perfect event, organization, or committee for you.
                 </p>
             </div>
-
+            @if(Auth::user()->isAdmin())
+            <a href="{{ route('post.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Create Post
+            </a>
+            @endif
+        </div>
+    </x-slot>
             <!-- Success/Error Messages -->
             @if(session('success'))
-            <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-sm animate-fade-in">
-                <p class="font-medium">{{ session('success') }}</p>
+            <div class="mb-8 rounded-lg bg-green-50 p-4 text-sm font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800 shadow-sm">
+                {{ session('success') }}
             </div>
             @endif
 
             @if(session('error'))
-            <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-sm animate-fade-in">
-                <p class="font-medium">{{ session('error') }}</p>
-            </div>
-            @endif
-
-            <!-- Create Post Button (for Students & Organizers) -->
-            @if(!Auth::user()->isAdmin())
-            <div class="mb-6">
-                <a href="{{ route('post.create') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition duration-200">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Create New Post
-                </a>
+            <div class="mb-8 rounded-lg bg-red-50 p-4 text-sm font-medium text-red-700 border border-red-200 shadow-sm">
+                {{ session('error') }}
             </div>
             @endif
 
             <!-- Filter & Search Section -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
-                <form method="GET" action="{{ route('dashboard') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <x-card class="mb-12 shadow-sm border border-gray-200 bg-white">
+                <form method="GET" action="{{ route('dashboard') }}" class="grid grid-cols-1 md:grid-cols-12 gap-8 items-end pt-6">
                     <!-- Search -->
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search</label>
+                    <div class="md:col-span-5 space-y-3">
+                            <label class="text-sm font-medium text-gray-700">Search</label>
                         <div class="relative">
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search events..." class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
-                            <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 111.06-1.06l4.35 4.35z"/>
                             </svg>
+                            <x-text-input type="text" name="search" value="{{ request('search') }}" placeholder="Search events..." class="pl-9 w-full" />
                         </div>
                     </div>
 
                     <!-- Category Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
-                        <select name="kategori" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
+                    <div class="md:col-span-3 space-y-3">
+                        <label class="text-sm font-medium text-gray-700">Category</label>
+                        <select name="kategori" class="flex h-10 w-full rounded-md border-gray-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
                             <option value="">All Categories</option>
-                            <option value="Kepanitiaan" {{ request('kategori') == 'Kepanitiaan' ? 'selected' : '' }}>Kepanitiaan</option>
-                            <option value="Organisasi" {{ request('kategori') == 'Organisasi' ? 'selected' : '' }}>Organisasi</option>
-                            <option value="Laboratorium" {{ request('kategori') == 'Laboratorium' ? 'selected' : '' }}>Laboratorium</option>
-                            <option value="Seminar" {{ request('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                            <option value="Lomba" {{ request('kategori') == 'Lomba' ? 'selected' : '' }}>Lomba</option>
-                            <option value="Event Kampus" {{ request('kategori') == 'Event Kampus' ? 'selected' : '' }}>Event Kampus</option>
+                            @foreach(['Kepanitiaan', 'Organisasi', 'Laboratorium', 'Seminar', 'Lomba', 'Event Kampus'] as $cat)
+                                <option value="{{ $cat }}" {{ request('kategori') == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <!-- Sort -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sort By</label>
-                        <select name="sort" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
-                            <option value="terdekat" {{ request('sort') == 'terdekat' ? 'selected' : '' }}>Nearest Deadline</option>
-                            <option value="terjauh" {{ request('sort') == 'terjauh' ? 'selected' : '' }}>Farthest Deadline</option>
+                    <div class="md:col-span-2 space-y-3">
+                        <label class="text-sm font-medium text-gray-700">Sort By</label>
+                        <select name="sort" class="flex h-10 w-full rounded-md border-gray-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                            <option value="terdekat" {{ request('sort') == 'terdekat' ? 'selected' : '' }}>Nearest</option>
+                            <option value="terjauh" {{ request('sort') == 'terjauh' ? 'selected' : '' }}>Farthest</option>
                         </select>
                     </div>
 
-                    <!-- Submit Button -->
-                    <div class="md:col-span-4 flex space-x-2">
-                        <button type="submit" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
-                            Apply Filters
-                        </button>
-                        <a href="{{ route('dashboard') }}" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                            Reset
+                    <!-- Submit Buttons -->
+                    <div class="md:col-span-2 flex gap-2">
+                        <x-primary-button class="w-full h-10 justify-center">
+                            Filter
+                        </x-primary-button>
+                        <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 h-10 w-12 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" title="Reset Filters">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
                         </a>
                     </div>
                 </form>
-            </div>
+            </x-card>
 
             <!-- Posts Grid -->
             @if($posts->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                 @foreach($posts as $post)
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transform hover:-translate-y-1 transition duration-300">
+                <x-card class="group flex flex-col h-full overflow-hidden border border-gray-200 bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2" :contentPadding="false">
                     <!-- Poster Image -->
-                    <div class="relative h-48 bg-gradient-to-br from-indigo-400 to-purple-500 overflow-hidden">
+                    <div class="relative aspect-[16/9] w-full overflow-hidden border-b border-gray-100">
                         @if($post->poster_path)
-                        <img src="{{ Storage::url($post->poster_path) }}" alt="{{ $post->judul }}" class="w-full h-full object-cover">
+                        <img src="{{ Storage::url($post->poster_path) }}" alt="{{ $post->judul }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         @else
-                        <div class="flex items-center justify-center h-full">
-                            <svg class="w-20 h-20 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
-                            </svg>
-                        </div>
+                        <!-- Default Placeholder Image -->
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop&q=60" alt="Event Placeholder" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80">
                         @endif
                         
+                        <!-- Gradients Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
                         <!-- Category Badge -->
-                        <div class="absolute top-3 left-3">
-                            @php
-                                $categoryColors = [
-                                    'Kepanitiaan' => 'bg-blue-500',
-                                    'Organisasi' => 'bg-green-500',
-                                    'Laboratorium' => 'bg-purple-500',
-                                    'Seminar' => 'bg-orange-500',
-                                    'Lomba' => 'bg-red-500',
-                                    'Event Kampus' => 'bg-pink-500',
-                                ];
-                                $badgeColor = $categoryColors[$post->kategori] ?? 'bg-gray-500';
-                            @endphp
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold text-white {{ $badgeColor }} shadow-lg">
+                        <div class="absolute top-4 left-4 z-10">
+                            <span class="inline-flex items-center rounded-full border border-white/20 px-2.5 py-0.5 text-xs font-semibold backdrop-blur-md bg-black/40 text-white shadow-sm">
                                 {{ $post->kategori }}
                             </span>
                         </div>
 
                         <!-- Bookmark Button -->
                         @if(!Auth::user()->isAdmin())
-                        <form action="{{ route('bookmark.toggle', $post->id) }}" method="POST" class="absolute top-3 right-3">
-                            @csrf
-                            <button type="submit" class="p-2 bg-white/90 rounded-full hover:bg-white transition shadow-lg">
-                                @if($post->isBookmarkedBy(Auth::id()))
-                                <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
-                                </svg>
-                                @else
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                </svg>
-                                @endif
-                            </button>
-                        </form>
+                        <div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <form action="{{ route('bookmark.toggle', $post->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="p-2 bg-black/40 backdrop-blur-md rounded-full hover:bg-white hover:text-black transition-all duration-200 border border-white/20 text-white">
+                                    @if($post->isBookmarkedBy(Auth::id()))
+                                    <svg class="w-4 h-4 text-red-500 fill-current" viewBox="0 0 20 20">
+                                        <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
+                                    </svg>
+                                    @else
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                        <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                    </svg>
+                                    @endif
+                                </button>
+                            </form>
+                        </div>
                         @endif
                     </div>
 
-                    <!-- Content -->
-                    <div class="p-5">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
-                            {{ $post->judul }}
-                        </h3>
+                    <div class="flex flex-col flex-grow p-6">
+                        <div class="mb-3">
+                             <h3 class="font-bold text-xl leading-tight tracking-tight line-clamp-1 group-hover:text-indigo-600 transition-colors cursor-pointer" onclick="window.location='{{ route('post.show', $post->id) }}'">
+                                {{ $post->judul }}
+                             </h3>
+                        </div>
                         
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                            {{ Str::limit($post->deskripsi, 100) }}
+                        <p class="text-sm text-gray-500 line-clamp-3 mb-6 flex-grow">
+                            {{ Str::limit($post->deskripsi, 120) }}
                         </p>
 
-                        <!-- Meta Info -->
-                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3 space-x-3">
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                </svg>
-                                {{ $post->user->name }}
+                        <!-- Meta Info Row -->
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                             <div class="flex items-center space-x-2">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($post->user->name) }}&color=7F9CF5&background=EBF4FF" alt="{{ $post->user->name }}" class="w-8 h-8 rounded-full border border-gray-200">
+                                <div>
+                                    <p class="text-xs font-semibold text-gray-900 line-clamp-1 max-w-[100px]">{{ $post->user->name }}</p>
+                                    <p class="text-[10px] text-gray-500">{{ ucfirst($post->user->role) }}</p>
+                                </div>
                             </div>
+                            
+                            <!-- Deadline / Days Left -->
+                            @php
+                                $daysLeft = (int) ceil(now()->diffInDays($post->deadline, false));
+                            @endphp
+                            
                             <div class="flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                {{ $post->deadline->format('d M Y') }}
+                                @if($daysLeft >= 0 && $daysLeft <= 7)
+                                <span class="inline-flex items-center text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded-md border border-red-100">
+                                    <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    {{ $daysLeft }}d left
+                                </span>
+                                @else
+                                <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                                    {{ $post->deadline->format('M d') }}
+                                </span>
+                                @endif
                             </div>
-                        </div>
-
-                        <!-- Deadline Warning -->
-                        @php
-                            $daysLeft = (int) ceil(now()->diffInDays($post->deadline, false));
-                        @endphp
-                        @if($daysLeft >= 0 && $daysLeft <= 7)
-                        <div class="mb-3 px-3 py-1 bg-red-100 text-red-700 rounded-lg text-xs font-semibold">
-                            ⏰ {{ $daysLeft }} {{ $daysLeft == 1 ? 'day' : 'days' }} left!
-                        </div>
-                        @endif
-
-                        <!-- Actions -->
-                        <div class="flex space-x-2">
-                            <a href="{{ route('post.show', $post->id) }}" class="flex-1 px-4 py-2 bg-indigo-600 text-white text-center font-semibold rounded-lg hover:bg-indigo-700 transition text-sm">
-                                View Details
-                            </a>
-                            @if(!Auth::user()->isAdmin() && $post->user_id !== Auth::id())
-                            <a href="{{ route('report.create', $post->id) }}" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition text-sm" title="Report">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
-                                </svg>
-                            </a>
-                            @endif
                         </div>
                     </div>
-                </div>
+                </x-card>
                 @endforeach
             </div>
 
             <!-- Pagination -->
-            <div class="mt-6">
+            <div class="mt-8">
                 {{ $posts->links() }}
             </div>
             @else
             <!-- Empty State -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
-                <svg class="w-24 h-24 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">No Events Found</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">Try adjusting your filters or create a new post!</p>
-                @if(!Auth::user()->isAdmin())
-                <a href="{{ route('post.create') }}" class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Create New Post
-                </a>
-                @endif
-            </div>
+            <x-card class="text-center py-16 border-dashed">
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="rounded-full bg-muted/50 p-4 ring-1 ring-border">
+                        <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="text-xl font-semibold text-foreground">No events found</h3>
+                        <p class="text-sm text-gray-500 max-w-sm mx-auto">We couldn't find any events matching your criteria. Try adjusting your filters or create a new post.</p>
+                    </div>
+                    @if(!Auth::user()->isAdmin())
+                    <div class="pt-4">
+                        <a href="{{ route('post.create') }}" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 bg-indigo-600 text-white shadow hover:bg-indigo-700 h-9 px-4 py-2">
+                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Create New Post
+                        </a>
+                    </div>
+                    @endif
+                </div>
+            </x-card>
             @endif
         </div>
     </div>
