@@ -89,6 +89,73 @@
                         @enderror
                     </div>
 
+                    <!-- Requirements -->
+                    @php
+                        $existingRequirements = old('requirements', $post->requirements ?? ['', '', '']);
+                        // Ensure at least 3 requirements
+                        while (count($existingRequirements) < 3) {
+                            $existingRequirements[] = '';
+                        }
+                    @endphp
+                    <div class="mb-6" x-data="{ 
+                        requirements: {{ json_encode($existingRequirements) }},
+                        addRequirement() {
+                            this.requirements.push('');
+                        },
+                        removeRequirement(index) {
+                            if (this.requirements.length > 3) {
+                                this.requirements.splice(index, 1);
+                            }
+                        }
+                    }">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Requirements <span class="text-red-500">*</span>
+                            <span class="text-xs font-normal text-gray-500 ml-1">(Minimal 3)</span>
+                        </label>
+                        
+                        <div class="space-y-3">
+                            <template x-for="(requirement, index) in requirements" :key="index">
+                                <div class="flex items-center gap-2">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-sm font-semibold">
+                                        <span x-text="index + 1"></span>
+                                    </div>
+                                    <input type="text" 
+                                        :name="'requirements[' + index + ']'" 
+                                        x-model="requirements[index]"
+                                        class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                                        placeholder="e.g., Mahasiswa aktif minimal semester 3"
+                                        required>
+                                    <button type="button" 
+                                        @click="removeRequirement(index)"
+                                        x-show="requirements.length > 3"
+                                        class="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                        title="Remove requirement">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                    <div x-show="requirements.length <= 3" class="w-9"></div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <button type="button" 
+                            @click="addRequirement()"
+                            class="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Requirement
+                        </button>
+
+                        @error('requirements')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        @error('requirements.*')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Poster Upload -->
                     <div class="mb-6">
                         <label for="poster" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">

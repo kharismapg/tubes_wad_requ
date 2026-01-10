@@ -25,7 +25,7 @@
                             class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
                             placeholder="e.g., Open Recruitment Himpunan 2025">
                         @error('judul')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -37,28 +37,33 @@
                         <select id="kategori" name="kategori" required
                             class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
                             <option value="">-- Select Category --</option>
-                            <option value="Kepanitiaan" {{ old('kategori') == 'Kepanitiaan' ? 'selected' : '' }}>Kepanitiaan</option>
-                            <option value="Organisasi" {{ old('kategori') == 'Organisasi' ? 'selected' : '' }}>Organisasi</option>
-                            <option value="Laboratorium" {{ old('kategori') == 'Laboratorium' ? 'selected' : '' }}>Laboratorium</option>
+                            <option value="Kepanitiaan" {{ old('kategori') == 'Kepanitiaan' ? 'selected' : '' }}>
+                                Kepanitiaan</option>
+                            <option value="Organisasi" {{ old('kategori') == 'Organisasi' ? 'selected' : '' }}>Organisasi
+                            </option>
+                            <option value="Laboratorium" {{ old('kategori') == 'Laboratorium' ? 'selected' : '' }}>
+                                Laboratorium</option>
                             <option value="Seminar" {{ old('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
                             <option value="Lomba" {{ old('kategori') == 'Lomba' ? 'selected' : '' }}>Lomba</option>
-                            <option value="Event Kampus" {{ old('kategori') == 'Event Kampus' ? 'selected' : '' }}>Event Kampus</option>
+                            <option value="Event Kampus" {{ old('kategori') == 'Event Kampus' ? 'selected' : '' }}>Event
+                                Kampus</option>
                         </select>
                         @error('kategori')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Deskripsi -->
                     <div class="mb-6">
-                        <label for="deskripsi" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="deskripsi"
+                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             Description <span class="text-red-500">*</span>
                         </label>
                         <textarea id="deskripsi" name="deskripsi" rows="6" required
                             class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
                             placeholder="Describe your event, requirements, benefits, etc.">{{ old('deskripsi') }}</textarea>
                         @error('deskripsi')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -71,20 +76,81 @@
                             min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                             class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
                         @error('deadline')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Link Pendaftaran -->
                     <div class="mb-6">
-                        <label for="link_pendaftaran" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="link_pendaftaran"
+                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             Registration Link <span class="text-red-500">*</span>
                         </label>
-                        <input type="url" id="link_pendaftaran" name="link_pendaftaran" value="{{ old('link_pendaftaran') }}" required
+                        <input type="url" id="link_pendaftaran" name="link_pendaftaran"
+                            value="{{ old('link_pendaftaran') }}" required
                             class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
                             placeholder="https://forms.google.com/...">
                         @error('link_pendaftaran')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="mb-6" x-data="{ 
+                        requirements: {{ json_encode(old('requirements', ['', '', ''])) }},
+                        addRequirement() {
+                            this.requirements.push('');
+                        },
+                        removeRequirement(index) {
+                            if (this.requirements.length > 3) {
+                                this.requirements.splice(index, 1);
+                            }
+                        }
+                    }">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Requirements <span class="text-red-500">*</span>
+                            <span class="text-xs font-normal text-gray-500 ml-1">(Minimal 3)</span>
+                        </label>
+
+                        <div class="space-y-3">
+                            <template x-for="(requirement, index) in requirements" :key="index">
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-sm font-semibold">
+                                        <span x-text="index + 1"></span>
+                                    </div>
+                                    <input type="text" :name="'requirements[' + index + ']'"
+                                        x-model="requirements[index]"
+                                        class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+                                        placeholder="e.g., Mahasiswa aktif minimal semester 3" required>
+                                    <button type="button" @click="removeRequirement(index)"
+                                        x-show="requirements.length > 3"
+                                        class="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                        title="Remove requirement">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                    <div x-show="requirements.length <= 3" class="w-9"></div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <button type="button" @click="addRequirement()"
+                            class="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Requirement
+                        </button>
+
+                        @error('requirements')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        @error('requirements.*')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -93,15 +159,21 @@
                         <label for="poster" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             Event Poster <span class="text-red-500">*</span>
                         </label>
-                        <div id="drop-zone" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg hover:border-indigo-500 transition cursor-pointer">
+                        <div id="drop-zone"
+                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg hover:border-indigo-500 transition cursor-pointer">
                             <div class="space-y-1 text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+                                    viewBox="0 0 48 48">
+                                    <path
+                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <div class="flex text-sm text-gray-600 dark:text-gray-400 justify-center">
-                                    <label for="poster" class="relative cursor-pointer bg-white dark:bg-gray-700 rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                    <label for="poster"
+                                        class="relative cursor-pointer bg-white dark:bg-gray-700 rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
                                         <span>Upload a file</span>
-                                        <input id="poster" name="poster" type="file" class="sr-only" accept="image/*" required onchange="handleFiles(this.files)">
+                                        <input id="poster" name="poster" type="file" class="sr-only" accept="image/*"
+                                            required onchange="handleFiles(this.files)">
                                     </label>
                                     <p class="pl-1">or drag and drop</p>
                                 </div>
@@ -112,7 +184,7 @@
                             <img id="preview" src="" alt="Preview" class="max-w-full h-64 mx-auto rounded-lg shadow-lg">
                         </div>
                         @error('poster')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -120,20 +192,25 @@
                     <div class="mb-6 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
                         <div class="flex">
                             <svg class="h-5 w-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                    clip-rule="evenodd" />
                             </svg>
                             <p class="text-sm text-blue-700 dark:text-blue-300">
-                                Your post will be reviewed by admin before being published. You'll receive a notification once it's approved or if changes are needed.
+                                Your post will be reviewed by admin before being published. You'll receive a
+                                notification once it's approved or if changes are needed.
                             </p>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="flex space-x-4">
-                        <button type="submit" class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition duration-200">
+                        <button type="submit"
+                            class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition duration-200">
                             Submit for Review
                         </button>
-                        <a href="{{ route('dashboard') }}" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        <a href="{{ route('dashboard') }}"
+                            class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
                             Cancel
                         </a>
                     </div>
@@ -174,10 +251,10 @@
             const preview = document.getElementById('preview');
             const previewContainer = document.getElementById('imagePreview');
             const file = files[0];
-            
+
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     preview.src = e.target.result;
                     previewContainer.classList.remove('hidden');
                 }
