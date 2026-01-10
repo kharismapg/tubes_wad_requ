@@ -33,7 +33,16 @@ class PostController extends Controller
             'deadline' => 'required|date|after:today',
             'link_pendaftaran' => 'required|url',
             'poster' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'requirements' => 'required|array|min:3',
+            'requirements.*' => 'required|string|max:255',
+        ], [
+            'requirements.required' => 'Requirements harus diisi.',
+            'requirements.min' => 'Minimal harus ada 3 requirements.',
+            'requirements.*.required' => 'Setiap requirement tidak boleh kosong.',
         ]);
+
+        // Filter empty requirements
+        $requirements = array_filter($validated['requirements'], fn($r) => !empty(trim($r)));
 
         // Upload poster
         $posterPath = null;
@@ -50,6 +59,7 @@ class PostController extends Controller
             'link_pendaftaran' => $validated['link_pendaftaran'],
             'poster_path' => $posterPath,
             'status' => 'pending',
+            'requirements' => array_values($requirements),
         ]);
 
         return redirect()->route('post.my-posts')->with('success', 'Postingan berhasil dibuat dan menunggu persetujuan admin!');
@@ -83,7 +93,16 @@ class PostController extends Controller
             'deadline' => 'required|date|after:today',
             'link_pendaftaran' => 'required|url',
             'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'requirements' => 'required|array|min:3',
+            'requirements.*' => 'required|string|max:255',
+        ], [
+            'requirements.required' => 'Requirements harus diisi.',
+            'requirements.min' => 'Minimal harus ada 3 requirements.',
+            'requirements.*.required' => 'Setiap requirement tidak boleh kosong.',
         ]);
+
+        // Filter empty requirements
+        $requirements = array_filter($validated['requirements'], fn($r) => !empty(trim($r)));
 
         // Upload new poster if provided
         if ($request->hasFile('poster')) {
@@ -97,6 +116,7 @@ class PostController extends Controller
         // Reset status to pending if content changed
         $validated['status'] = 'pending';
         $validated['pesan_admin'] = null;
+        $validated['requirements'] = array_values($requirements);
 
         $post->update($validated);
 
@@ -119,7 +139,7 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect()->back()->with('success', 'Postingan berhasil dihapus!');
+        return redirect()->route('post.my-posts')->with('success', 'Postingan berhasil dihapus!');
     }
 
     public function myPosts()

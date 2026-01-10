@@ -1,95 +1,116 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <div class="mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Buat Akun Baru 🚀</h2>
+        <p class="text-gray-500 dark:text-gray-400 mt-2">Mulai perjalananmu bersama Req-U hari ini.</p>
+    </div>
+
+    <form method="POST" action="{{ route('register') }}" class="space-y-6">
         @csrf
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nama
+                Lengkap</label>
+            <input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name"
+                class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                placeholder="John Doe" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+        <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email
+                Address</label>
+            <input id="email" type="email" name="email" :value="old('email')" required autocomplete="username"
+                class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                placeholder="nama@email.com" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4" x-data="{ show: false }">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <div class="relative mt-1">
-                <x-text-input id="password" 
-                                class="block w-full pr-10" 
-                                ::type="show ? 'text' : 'password'"
-                                name="password"
-                                required autocomplete="new-password" />
-                
-                <button type="button" @click="show = !show" 
-                        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 focus:outline-none">
-                    
-                    <svg x-show="show" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <div x-data="{ show: false }">
+            <label for="password"
+                class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Password</label>
+            <div class="relative">
+                <input id="password" :type="show ? 'text' : 'password'" name="password" required
+                    autocomplete="new-password"
+                    class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all pr-12 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                    placeholder="••••••••" />
+                <button type="button" @click="show = !show"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition focus:outline-none">
+                    <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
-
-                    <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                    <svg x-show="show" x-cloak class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 012.728-4.257m2.726-2.042A9.968 9.968 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.05 10.05 0 01-4.293 5.19M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
                     </svg>
                 </button>
             </div>
-
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4" x-data="{ show: false }">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <div class="relative mt-1">
-                <x-text-input id="password_confirmation" 
-                                class="block w-full pr-10"
-                                ::type="show ? 'text' : 'password'"
-                                name="password_confirmation" required autocomplete="new-password" />
-                
-                <button type="button" @click="show = !show" 
-                        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 focus:outline-none">
-                    
-                    <svg x-show="show" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <div x-data="{ show: false }">
+            <label for="password_confirmation"
+                class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Konfirmasi Password</label>
+            <div class="relative">
+                <input id="password_confirmation" :type="show ? 'text' : 'password'" name="password_confirmation"
+                    required autocomplete="new-password"
+                    class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all pr-12 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                    placeholder="••••••••" />
+                <button type="button" @click="show = !show"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition focus:outline-none">
+                    <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
-
-                    <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                    <svg x-show="show" x-cloak class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 012.728-4.257m2.726-2.042A9.968 9.968 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.05 10.05 0 01-4.293 5.19M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
                     </svg>
                 </button>
             </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="mt-4">
-            <x-input-label for="role" :value="__('Register as')" />
-            
-            <select id="role" name="role" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" required>
-                <option value="" disabled selected>-- Choose Role --</option>
-                <option value="student">Student</option>
-                <option value="organizer">Organizer</option>
-            </select>
-
+        <!-- Role -->
+        <div>
+            <label for="role" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Daftar
+                Sebagai</label>
+            <div class="relative">
+                <select id="role" name="role" required
+                    class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all appearance-none cursor-pointer dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+                    <option value="" disabled selected>Pilih Peran...</option>
+                    <option value="student">👨‍🎓 Student (Mahasiswa)</option>
+                    <option value="organizer">🏢 Organizer (Himpunan/UKM)</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+        <button type="submit"
+            class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg transform transition hover:-translate-y-0.5 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-4">
+            Daftar Sekarang
+        </button>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+        <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-6">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" class="font-bold text-indigo-600 hover:text-indigo-500 transition">
+                Masuk disini
+            </a>
+        </p>
     </form>
 </x-guest-layout>

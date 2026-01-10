@@ -152,7 +152,7 @@ class AdminController extends Controller
 
         $user->delete();
 
-        return back()->with('success', 'User berhasil dihapus!');
+        return redirect()->route('admin.users')->with('success', 'User berhasil dihapus!');
     }
 
     public function reports()
@@ -203,6 +203,6 @@ class AdminController extends Controller
 
         $post->delete();
 
-        return back()->with('success', 'Postingan berhasil dihapus!');
+        return redirect()->route('admin.index')->with('success', 'Postingan berhasil dihapus!');
     }
 }

@@ -16,10 +16,12 @@ class Post extends Model
         'status',
         'link_pendaftaran',
         'pesan_admin',
+        'requirements',
     ];
 
     protected $casts = [
         'deadline' => 'date',
+        'requirements' => 'array',
     ];
 
     // Relationships
