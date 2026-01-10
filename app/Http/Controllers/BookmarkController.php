@@ -34,6 +34,7 @@ class BookmarkController extends Controller
         $bookmarks = auth()->user()->bookmarks()
             ->with('user')
             ->where('status', 'approved')
+            ->active()
             ->orderBy('deadline', 'asc')
             ->get();
 

@@ -125,6 +125,7 @@ class PostController extends Controller
     public function myPosts()
     {
         $posts = Post::where('user_id', auth()->id())
+            ->active()
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -134,7 +135,7 @@ class PostController extends Controller
     public function archive()
     {
         $posts = Post::where('user_id', auth()->id())
-            ->where('deadline', '<', now())
+            ->expired()
             ->orderBy('deadline', 'desc')
             ->get();
 
