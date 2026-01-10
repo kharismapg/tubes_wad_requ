@@ -60,4 +60,15 @@ class Post extends Model
     {
         return $this->status === 'rejected';
     }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('deadline', '>=', now()->startOfDay());
+    }
+
+    public function scopeExpired($query)
+    {
+        return $query->where('deadline', '<', now()->startOfDay());
+    }
 }

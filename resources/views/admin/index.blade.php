@@ -82,7 +82,16 @@
                                                         {{ strtoupper(substr($post->user->name, 0, 1)) }}
                                                     </div>
                                                 @endif
-                                                <span class="text-sm text-gray-700">{{ $post->user->name }}</span>
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm text-gray-700 font-medium">{{ $post->user->name }}</span>
+                                                    @if($post->user->role === 'organizer')
+                                                        <span class="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider">Organisasi</span>
+                                                    @elseif($post->user->role === 'student')
+                                                        <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Mahasiswa</span>
+                                                    @else
+                                                        <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">{{ ucfirst($post->user->role) }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
@@ -208,7 +217,16 @@
                                                         {{ strtoupper(substr($post->user->name, 0, 1)) }}
                                                     </div>
                                                 @endif
-                                                <span class="text-sm text-gray-700">{{ $post->user->name }}</span>
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm text-gray-700 font-medium">{{ $post->user->name }}</span>
+                                                    @if($post->user->role === 'organizer')
+                                                        <span class="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider">Organisasi</span>
+                                                    @elseif($post->user->role === 'student')
+                                                        <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Mahasiswa</span>
+                                                    @else
+                                                        <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">{{ ucfirst($post->user->role) }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
@@ -294,7 +312,16 @@
                                                         {{ strtoupper(substr($post->user->name, 0, 1)) }}
                                                     </div>
                                                 @endif
-                                                <span class="text-sm text-gray-700">{{ $post->user->name }}</span>
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm text-gray-700 font-medium">{{ $post->user->name }}</span>
+                                                    @if($post->user->role === 'organizer')
+                                                        <span class="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider">Organisasi</span>
+                                                    @elseif($post->user->role === 'student')
+                                                        <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Mahasiswa</span>
+                                                    @else
+                                                        <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">{{ ucfirst($post->user->role) }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 max-w-md">
@@ -371,7 +398,18 @@
                                                         {{ strtoupper(substr($report->user->name ?? 'A', 0, 1)) }}
                                                     </div>
                                                 @endif
-                                                <span class="text-sm text-gray-700">{{ $report->user->name ?? 'Anonymous' }}</span>
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm text-gray-700 font-medium">{{ $report->user->name ?? 'Anonymous' }}</span>
+                                                    @if($report->user)
+                                                        @if($report->user->role === 'organizer')
+                                                            <span class="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider">Organisasi</span>
+                                                        @elseif($report->user->role === 'student')
+                                                            <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Mahasiswa</span>
+                                                        @else
+                                                            <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">{{ ucfirst($report->user->role) }}</span>
+                                                        @endif
+                                                    @endif
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 max-w-md">

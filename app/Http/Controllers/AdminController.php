@@ -20,16 +20,19 @@ class AdminController extends Controller
 
         $pendingPosts = Post::with('user')
             ->where('status', 'pending')
+            ->active()
             ->orderBy('created_at', 'desc')
             ->get();
 
         $approvedPosts = Post::with('user')
             ->where('status', 'approved')
+            ->active()
             ->orderBy('created_at', 'desc')
             ->get();
 
         $rejectedPosts = Post::with('user')
             ->where('status', 'rejected')
+            ->active()
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -97,7 +100,7 @@ class AdminController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $query = Post::with('user')->where('deadline', '<', now());
+        $query = Post::with('user')->expired();
 
         // Filter by year
         if ($request->has('year') && $request->year != '') {

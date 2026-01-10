@@ -12,6 +12,18 @@ class DashboardController extends Controller
         $query = Post::with(['user', 'bookmarks'])
             ->where('status', 'approved');
 
+        // Filter by deadline status
+        if ($request->has('status_deadline')) {
+            if ($request->status_deadline === 'active') {
+                $query->active();
+            } elseif ($request->status_deadline === 'expired') {
+                $query->expired();
+            }
+        } else {
+            // Default to showing active posts if no status_deadline filter is provided
+            $query->active();
+        }
+
         // Filter by category
         if ($request->has('kategori') && $request->kategori != '') {
             $query->where('kategori', $request->kategori);
