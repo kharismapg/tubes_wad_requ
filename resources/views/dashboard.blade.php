@@ -144,7 +144,19 @@
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode($post->user->name) }}&color=7F9CF5&background=EBF4FF" alt="{{ $post->user->name }}" class="w-8 h-8 rounded-full border border-gray-200">
                                 <div>
                                     <p class="text-xs font-semibold text-gray-900 line-clamp-1 max-w-[100px]">{{ $post->user->name }}</p>
-                                    <p class="text-[10px] text-gray-500">{{ ucfirst($post->user->role) }}</p>
+                                    @if($post->user->role === 'organizer')
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                            Organisasi
+                                        </span>
+                                    @elseif($post->user->role === 'student')
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                                            Mahasiswa
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                            {{ ucfirst($post->user->role) }}
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                             

@@ -81,9 +81,20 @@
                                     <div class="flex items-start justify-between gap-3">
                                         <div>
                                             <h3 class="text-lg font-bold text-gray-900 mb-1 line-clamp-1">{{ $post->judul }}</h3>
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
-                                                {{ $post->kategori }}
-                                            </span>
+                                            <div class="flex items-center gap-2">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                                                    {{ $post->kategori }}
+                                                </span>
+                                                @if($post->user->role === 'organizer')
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                        Organisasi
+                                                    </span>
+                                                @elseif($post->user->role === 'student')
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                                                        Mahasiswa
+                                                    </span>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
