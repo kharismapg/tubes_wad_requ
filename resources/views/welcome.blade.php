@@ -5,28 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Req-U - Student Event & Recruitment Platform</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .gradient-animation {
-            background-size: 200% 200%;
-            animation: gradient 15s ease infinite;
-        }
-    </style>
 </head>
 <body class="antialiased">
     <!-- Hero Section -->
-    <div class="relative min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 gradient-animation overflow-hidden">
+    <div class="relative min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden">
         <!-- Decorative Elements -->
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
@@ -66,14 +48,12 @@
 
         <!-- Hero Content -->
         <div class="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-32 text-center">
-            <div class="float-animation">
-                <h1 class="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                    Discover Your Next
-                    <span class="block bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
-                        Opportunity
-                    </span>
-                </h1>
-            </div>
+            <h1 class="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Discover Your Next
+                <span class="block bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
+                    Opportunity
+                </span>
+            </h1>
             
             <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto">
                 Platform terpadu untuk mahasiswa menemukan event, organisasi, dan kesempatan bergabung dengan kepanitiaan & laboratorium
@@ -108,10 +88,108 @@
         <!-- Wave Divider -->
         <div class="absolute bottom-0 left-0 right-0">
             <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+                <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#f9fafb"/>
             </svg>
         </div>
     </div>
+
+    <!-- Latest Oprec Section -->
+    <section class="py-16 lg:py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+                <div>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900">Open Recruitment Terbaru</h2>
+                    <p class="text-gray-500 mt-2">Jangan lewatkan kesempatan bergabung!</p>
+                </div>
+                <a href="{{ route('dashboard') }}" class="text-indigo-600 font-semibold hover:text-indigo-700 transition inline-flex items-center gap-1">
+                    Lihat Semua
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @php
+                    $latestPosts = \App\Models\Post::where('status', 'approved')
+                        ->where('deadline', '>=', now())
+                        ->orderBy('created_at', 'desc')
+                        ->take(6)
+                        ->get();
+                @endphp
+
+                @forelse($latestPosts as $post)
+                    <a href="{{ route('post.show', $post->id) }}" class="group flex flex-col bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-indigo-300 transition-all duration-300">
+                        <!-- Poster Image -->
+                        <div class="aspect-[16/9] overflow-hidden bg-gray-100">
+                            @if($post->poster_path)
+                                <img src="{{ Storage::url($post->poster_path) }}" 
+                                     alt="{{ $post->judul }}" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex flex-col items-center justify-center text-white">
+                                    <span class="text-4xl mb-2">📋</span>
+                                    <span class="text-sm font-medium opacity-80">{{ $post->kategori }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="flex-1 flex flex-col p-5">
+                            <!-- Tags -->
+                            <div class="flex flex-wrap items-center gap-2 mb-3">
+                                <span class="px-2.5 py-1 text-xs font-semibold bg-indigo-100 text-indigo-700 rounded-full">
+                                    {{ $post->kategori }}
+                                </span>
+                                @php
+                                    $daysLeft = (int) floor(now()->floatDiffInDays($post->deadline, false));
+                                @endphp
+                                @if($daysLeft <= 7 && $daysLeft >= 0)
+                                    <span class="px-2.5 py-1 text-xs font-semibold {{ $daysLeft <= 3 ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700' }} rounded-full">
+                                        🔥 {{ $daysLeft }} hari lagi
+                                    </span>
+                                @endif
+                            </div>
+
+                            <!-- Title -->
+                            <h3 class="font-bold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 mb-2">
+                                {{ $post->judul }}
+                            </h3>
+
+                            <!-- Description -->
+                            <p class="text-sm text-gray-500 line-clamp-2 flex-1">
+                                {{ Str::limit($post->deskripsi, 100) }}
+                            </p>
+
+                            <!-- Footer -->
+                            <div class="flex items-center gap-3 pt-4 mt-4 border-t border-gray-100">
+                                @if($post->user->profile_picture)
+                                    <img src="{{ Storage::url($post->user->profile_picture) }}" 
+                                         class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm">
+                                @else
+                                    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-bold text-white">
+                                        {{ strtoupper(substr($post->user->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">{{ $post->user->name }}</p>
+                                    <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @empty
+                    <div class="col-span-full text-center py-16 bg-white rounded-2xl border border-gray-200">
+                        <div class="text-6xl mb-4">📭</div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Belum ada oprec</h3>
+                        <p class="text-gray-500">Oprec baru akan muncul di sini.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
     <section id="features" class="py-20 bg-white">
